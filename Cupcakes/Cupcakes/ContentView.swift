@@ -35,42 +35,29 @@ struct Result: Codable {
 }
 
 struct ContentView: View {
-    @State var results = [Result]()
+    @State var username = ""
+    @State var email = ""
+    
+    var disableForm: Bool {
+        username.count < 5 || email.count < 5
+    }
     
     var body: some View {
-        List(results, id: \.trackId) { item in
-            VStack(alignment: .leading) {
-                Text(item.trackName)
-                    .font(.headline)
-                Text(item.collectionName)
+        Form {
+            Section {
+                TextField("Username", text: $username)
+                TextField("Email", text: $email)
             }
-        }
-        .onAppear(perform: loadData)
-    }
-    
-    func loadData() {
-        guard let url = URL(string: "https://itunes.apple.com/search?term=pet+shop+boys&entity=song") else {
-            print("Invalid URL")
-            return
-        }
-        
-        let request = URLRequest(url: url)
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let data = data {
-                if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {
-                    DispatchQueue.main.async {
-                        results = decodedResponse.results
-                    }
-                    return
+            
+            Section {
+                Button("Create account") {
+                    print("Creating account...")
                 }
             }
-            
-            print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
-            
+            .disabled(disableForm)
         }
-        .resume() // most often forgotten
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
