@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E499288268EF18F00BEFECF /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E499287268EF18F00BEFECF /* CheckoutView.swift */; };
 		1EC81D0526895642009D7B30 /* CupcakesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC81D0426895642009D7B30 /* CupcakesApp.swift */; };
 		1EC81D0726895642009D7B30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC81D0626895642009D7B30 /* ContentView.swift */; };
 		1EC81D0926895644009D7B30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EC81D0826895644009D7B30 /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E499287268EF18F00BEFECF /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
 		1EC81D0126895642009D7B30 /* Cupcakes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cupcakes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EC81D0426895642009D7B30 /* CupcakesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CupcakesApp.swift; sourceTree = "<group>"; };
 		1EC81D0626895642009D7B30 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				1EC81D0426895642009D7B30 /* CupcakesApp.swift */,
 				1EC81D0626895642009D7B30 /* ContentView.swift */,
 				1ECFA177268BAC2400C39F81 /* AddressView.swift */,
+				1E499287268EF18F00BEFECF /* CheckoutView.swift */,
 				1ECFA175268BA84300C39F81 /* Order.swift */,
 				1EC81D0826895644009D7B30 /* Assets.xcassets */,
 				1EC81D0D26895644009D7B30 /* Info.plist */,
@@ -146,6 +149,7 @@
 			files = (
 				1ECFA176268BA84300C39F81 /* Order.swift in Sources */,
 				1ECFA178268BAC2400C39F81 /* AddressView.swift in Sources */,
+				1E499288268EF18F00BEFECF /* CheckoutView.swift in Sources */,
 				1EC81D0726895642009D7B30 /* ContentView.swift in Sources */,
 				1EC81D0526895642009D7B30 /* CupcakesApp.swift in Sources */,
 			);
