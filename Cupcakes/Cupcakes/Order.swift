@@ -7,6 +7,64 @@
 
 import Foundation
 
+class OrderWrapper: ObservableObject, Codable {
+    @Published var orderStruct: OrderStruct = OrderStruct()
+    enum CodingKeys: CodingKey {
+        case orderStruct
+    }
+    init() {}
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        orderStruct = try container.decode(OrderStruct.self, forKey: .orderStruct)
+    }
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(orderStruct, forKey: .orderStruct)
+    }
+}
+
+struct OrderStruct: Codable {
+    static let types = ["Vanilla", "Strawberry", "Chocolate", "Rainbow"]
+    
+    var type = 0
+    var quantity = 5
+    var specialRequestEnabled = false {
+        didSet {
+            if !specialRequestEnabled {
+                extraFrosting = false
+                addSprinkles = false
+            }
+        }
+    }
+    var extraFrosting = false
+    var addSprinkles = false
+    var name = "Jane Doe"
+    var streetAddress = "QFC"
+    var city = "Seattle"
+    var zip = "98178"
+    
+    var hasValidAddress: Bool {
+        return !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+            !streetAddress.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !city.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !zip.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
+    var cost: Double {
+        var cost = Double(quantity) * 2
+        cost += Double(type) / 2
+        
+        if extraFrosting {
+            cost += Double(quantity)
+        }
+        
+        if addSprinkles {
+            cost += Double(quantity) / 2
+        }
+        return cost
+    }
+}
+
 class Order: ObservableObject, Codable {
     enum CodingKeys: CodingKey {
         case type, quantity, extraFrosting, addSprinkles, name, streetAddress, city, zip
@@ -60,7 +118,10 @@ class Order: ObservableObject, Codable {
     @Published var zip = "98178"
     
     var hasValidAddress: Bool {
-        return !name.isEmpty && !streetAddress.isEmpty && !city.isEmpty && !zip.isEmpty
+        return !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+            !streetAddress.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !city.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !zip.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
     
     var cost: Double {

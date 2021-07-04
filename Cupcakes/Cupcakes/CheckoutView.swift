@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CheckoutView: View {
     @ObservedObject var order: Order
+    @ObservedObject var orderWrapper: OrderWrapper
+    @State private var messageTitle = ""
     @State private var confirmationMessage = ""
     @State private var showingConfirmation = false
     
@@ -21,7 +23,7 @@ struct CheckoutView: View {
                         .scaledToFit()
                         .frame(width: geo.size.width)
                     
-                    Text("Your total is $\(order.cost, specifier: "%.2f")")
+                    Text("Your total is $\(orderWrapper.orderStruct.cost, specifier: "%.2f")")
                         .font(.title)
                     
                     Button("Place order") {
@@ -33,12 +35,12 @@ struct CheckoutView: View {
         }
         .navigationBarTitle("Check out", displayMode: .inline)
         .alert(isPresented: $showingConfirmation) {
-            Alert(title: Text("Thank you!"), message: Text(confirmationMessage), dismissButton: .default(Text("OK")))
+            Alert(title: Text(messageTitle), message: Text(confirmationMessage), dismissButton: .default(Text("OK")))
         }
     }
     
     func placeOrder() {
-        guard let encoded = try? JSONEncoder().encode(order) else {
+        guard let encoded = try? JSONEncoder().encode(orderWrapper) else {
             print("Failed to encode order")
             return
         }
@@ -50,11 +52,15 @@ struct CheckoutView: View {
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
-                print("No data in response: \(error?.localizedDescription ?? "Unknown error").")
+                print("Cannot place your order!  \(error?.localizedDescription ?? "Unknown error").")
+                messageTitle = "Error"
+                confirmationMessage = "Cannot place your order! \(error?.localizedDescription ?? "Unknown error")"
+                showingConfirmation = true
                 return
             }
-            if let decodedOrder = try? JSONDecoder().decode(Order.self, from: data) {
-                confirmationMessage = "Your order for \(decodedOrder.quantity) x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on its way!"
+            if let decodedOrder = try? JSONDecoder().decode(OrderWrapper.self, from: data) {
+                messageTitle = "Thank you!"
+                confirmationMessage = "Your order for \(decodedOrder.orderStruct.quantity) x \(OrderStruct.types[decodedOrder.orderStruct.type].lowercased()) cupcakes is on its way!"
                 showingConfirmation = true
             } else {
                 print("Invalid response from server.")
@@ -67,6 +73,6 @@ struct CheckoutView: View {
 
 struct CheckoutView_Previews: PreviewProvider {
     static var previews: some View {
-        CheckoutView(order: Order())
+        CheckoutView(order: Order(), orderWrapper: OrderWrapper())
     }
 }
