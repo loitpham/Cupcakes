@@ -25,6 +25,7 @@ class Order: ObservableObject, Codable {
         city = try container.decode(String.self, forKey: .city)
         zip = try container.decode(String.self, forKey: .zip)
     }
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .type)
@@ -53,10 +54,10 @@ class Order: ObservableObject, Codable {
     @Published var extraFrosting = false
     @Published var addSprinkles = false
     
-    @Published var name = ""
-    @Published var streetAddress = ""
-    @Published var city = ""
-    @Published var zip = ""
+    @Published var name = "John Do"
+    @Published var streetAddress = "9999 Holman Rd"
+    @Published var city = "Seattle"
+    @Published var zip = "98178"
     
     var hasValidAddress: Bool {
         return !name.isEmpty && !streetAddress.isEmpty && !city.isEmpty && !zip.isEmpty
